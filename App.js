@@ -4,11 +4,13 @@ import {NativeModules} from 'react-native';
 const {RSAModule} = NativeModules;
 
 function App() {
-  const [encryptedData, setEncryptedData] = useState('');
+  const [privateK, setPrivateK] = useState('');
+  const [publicK, setPublicK] = useState('');
 
   const onPress = async () => {
-    const data = await RSAModule.keyPairGenerator('deneme');
-    setEncryptedData(data);
+    const { privateKey, publicKey } = await RSAModule.keyPairGenerator();
+    setPrivateK(privateKey);
+    setPublicK(publicKey)
   };
 
   return (
@@ -22,7 +24,8 @@ function App() {
           />
         </View>
         <View style={{ padding: 10 }}>
-          <Text>Key: {encryptedData}</Text>
+          <Text style={{ padding: 5}}>privateK: {privateK}</Text>
+          <Text style={{ padding: 5}}>publicK: {publicK}</Text>
         </View>
       </ScrollView>
     </SafeAreaView>

@@ -5,10 +5,13 @@ import android.util.Base64;
 
 import androidx.annotation.NonNull;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.WritableMap;
+import com.rsareactnative.model.KeyPairDTO;
 
 import java.security.InvalidKeyException;
 import java.security.KeyPair;
@@ -47,7 +50,7 @@ public class RSAModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void keyPairGenerator(String name, Promise promise) {
+    public void keyPairGenerator(Promise promise) {
         try {
             kpg = KeyPairGenerator.getInstance(CRYPTO_METHOD);
         } catch (NoSuchAlgorithmException e) {
@@ -58,9 +61,13 @@ public class RSAModule extends ReactContextBaseJavaModule {
         publicKey = kp.getPublic();
         privateKey = kp.getPrivate();
 
+        //result
+        WritableMap map = Arguments.createMap();
+        map.putString("privateKey", privateKey.toString());
+        map.putString("publicKey", publicKey.toString());
+
         try {
-            String encryptedData = encrypt("Example Data");
-            promise.resolve(encryptedData);
+            promise.resolve(map);
         } catch (Exception e) {
             promise.reject("Create Event Error", e);
         };
