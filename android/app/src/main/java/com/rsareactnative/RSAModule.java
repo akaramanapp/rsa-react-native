@@ -69,7 +69,7 @@ public class RSAModule extends ReactContextBaseJavaModule {
         try {
             promise.resolve(map);
         } catch (Exception e) {
-            promise.reject("Create Event Error", e);
+            promise.reject("PK Generator error", e);
         };
     }
 
